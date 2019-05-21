@@ -1,16 +1,11 @@
-ThisBuild / scalaVersion := "2.12.8"
+import sbtcrossproject.CrossPlugin.autoImport.{ crossProject, CrossType }
 
-lazy val sebozune = (project in file("."))
-  .settings(
-    name := "sebozune",
-    libraryDependencies ++= List(
-      "org.typelevel" %% "cats-core" % "1.6.0",
-      "co.fs2"        %% "fs2-core"  % "1.0.4"
-    ),
-    libraryDependencies ++= List(
-      "org.scalatest"  %% "scalatest"  % "3.0.5",
-      "org.scalacheck" %% "scalacheck" % "1.14.0"
-    ).map(_ % Test),
+name := "sebozune"
+inThisBuild(
+  Seq(
+    version := "0.1.0-SNAPSHOT",
+    scalaVersion := "2.12.8",
+    organization := "io.github.asakaev",
     scalacOptions ++= List(
       "-deprecation",
       "-Xlint",
@@ -19,3 +14,44 @@ lazy val sebozune = (project in file("."))
       "-Ypartial-unification"
     )
   )
+)
+
+lazy val root =
+  project
+    .in(file("."))
+    .aggregate(backendJVM, sharedJVM, frontendJS, sharedJS)
+    .disablePlugins(RevolverPlugin)
+
+lazy val backend =
+  crossProject(JVMPlatform)
+    .crossType(CrossType.Pure)
+    .settings(name := "sebozune-backend")
+    .settings(
+      libraryDependencies ++= Dependencies.backendDeps
+    )
+    .dependsOn(shared % "test->test;compile->compile")
+
+lazy val frontend =
+  crossProject(JSPlatform)
+    .crossType(CrossType.Pure)
+    .settings(name := "sebozune-frontend")
+    .settings(scalaJSUseMainModuleInitializer := true)
+    .settings(
+      libraryDependencies ++= Dependencies.frontendDeps.value
+    )
+    .dependsOn(shared % "test->test;compile->compile")
+    .disablePlugins(RevolverPlugin)
+
+lazy val shared =
+  crossProject(JVMPlatform, JSPlatform)
+    .crossType(CrossType.Pure)
+    .settings(
+      libraryDependencies ++= Dependencies.crossDeps.value,
+      libraryDependencies ++= Dependencies.crossTestDeps.value
+    )
+    .disablePlugins(RevolverPlugin)
+
+lazy val backendJVM = backend.jvm
+lazy val sharedJVM  = shared.jvm
+lazy val frontendJS = frontend.js
+lazy val sharedJS   = shared.js
