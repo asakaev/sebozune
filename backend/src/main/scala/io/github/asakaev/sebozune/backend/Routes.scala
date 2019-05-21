@@ -4,19 +4,19 @@ import java.io.File
 import java.util.UUID
 
 import cats.Applicative
+import cats.effect._
 import cats.effect.concurrent.Ref
-import cats.effect.{ Sync, _ }
 import cats.implicits._
 import fs2.concurrent.Topic
 import fs2.{ Pipe, Stream }
 import io.github.asakaev.sebozune.backend.Authentication.Token
 import io.github.asakaev.sebozune.backend.ServerPipe.State
 import io.github.asakaev.sebozune.shared.{ protocol, ServerPath }
+import org.http4s._
 import org.http4s.dsl.Http4sDsl
 import org.http4s.server.websocket.WebSocketBuilder
 import org.http4s.websocket.WebSocketFrame
 import org.http4s.websocket.WebSocketFrame.Text
-import org.http4s.{ HttpRoutes, _ }
 
 import scala.concurrent.ExecutionContext
 
@@ -32,15 +32,19 @@ object Routes {
           .getOrElseF(NotFound())
       case request @ GET -> Root / "sebozune-frontend-fastopt.js" =>
         StaticFile
-          .fromFile(new File("../../frontend/.js/target/scala-2.12/sebozune-frontend-fastopt.js"),
-                    blockingEc,
-                    Some(request))
+          .fromFile(
+            new File("../../frontend/.js/target/scala-2.12/sebozune-frontend-fastopt.js"),
+            blockingEc,
+            Some(request)
+          )
           .getOrElseF(NotFound())
       case request @ GET -> Root / "sebozune-frontend-fastopt.js.map" =>
         StaticFile
-          .fromFile(new File("../../frontend/.js/target/scala-2.12/sebozune-frontend-fastopt.js.map"),
-                    blockingEc,
-                    Some(request))
+          .fromFile(
+            new File("../../frontend/.js/target/scala-2.12/sebozune-frontend-fastopt.js.map"),
+            blockingEc,
+            Some(request)
+          )
           .getOrElseF(NotFound())
       case GET -> Root / "favicon.ico" =>
         Ok()

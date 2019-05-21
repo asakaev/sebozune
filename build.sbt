@@ -9,7 +9,7 @@ inThisBuild(
     scalacOptions ++= List(
       "-deprecation",
       "-Xlint",
-//      "-Xfatal-warnings",
+      "-Xfatal-warnings",
       "-language:higherKinds",
       "-Ypartial-unification"
     )

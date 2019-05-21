@@ -4,7 +4,7 @@
 
 > “Would you tell me, please, which way I ought to go from here?”
 >
->  “That depends a good deal on where you want to get to,” said the Cat.
+> “That depends a good deal on where you want to get to,” said the Cat.
 >
 > “I don’t much care where—” said Alice.
 >
@@ -17,7 +17,7 @@
 > —Chapter 6, Pig and Pepper
 
 ### Overview
-Web application with basic http auth login stored in http only cookies. WebSocket connection allowed with valid cookie.
+Web application with basic http auth stored in http only cookies. WebSocket connection allowed with valid cookie.
 
 ### Build frontend application
 `sbt frontendJS/fastOptJS`

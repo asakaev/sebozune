@@ -31,18 +31,26 @@ package object component {
       tableComponent(s.tables),
       nav(
         cls := "level is-mobile",
-        div(cls := "level-right",
-            div(cls := "level-item", buttonComponent(q, "Auth 👌️")(_ => Login("admin", "admin")))),
-        div(cls := "level-right",
-            div(cls := "level-item", buttonComponent(q, "Auth 🤷‍♂️")(_ => Login("1337", "h4x0r")))),
+        div(
+          cls := "level-right",
+          div(cls := "level-item", buttonComponent(q, "Auth 👌️")(_ => Login("admin", "admin")))
+        ),
+        div(
+          cls := "level-right",
+          div(cls := "level-item", buttonComponent(q, "Auth 🤷‍♂️")(_ => Login("1337", "h4x0r")))
+        ),
         div(cls := "level-right", div(cls := "level-item", buttonComponent(q, "Ping 🍌")(e => Ping(e.clientX.toInt))))
       ),
       nav(
         cls := "level is-mobile",
-        div(cls := "level-left",
-            div(cls := "level-item", buttonComponent(q, "TablesSubscribe 🚀")(_ => TablesSubscribe))),
-        div(cls := "level-left",
-            div(cls := "level-item", buttonComponent(q, "TablesUnsubscribe 💥")(_ => TablesUnsubscribe)))
+        div(
+          cls := "level-left",
+          div(cls := "level-item", buttonComponent(q, "TablesSubscribe 🚀")(_ => TablesSubscribe))
+        ),
+        div(
+          cls := "level-left",
+          div(cls := "level-item", buttonComponent(q, "TablesUnsubscribe 💥")(_ => TablesUnsubscribe))
+        )
       ),
       tilesComponent(s.log)
     )
@@ -50,16 +58,20 @@ package object component {
   def counterComponent(in: Int, out: Int): TypedTag[Element] =
     nav(
       cls := "level is-mobile",
-      div(cls := "level-item has-text-centered",
-          div(
-            p(cls := "heading", "In"),
-            p(cls := "title", in)
-          )),
-      div(cls := "level-item has-text-centered",
-          div(
-            p(cls := "heading", "Out"),
-            p(cls := "title", out)
-          ))
+      div(
+        cls := "level-item has-text-centered",
+        div(
+          p(cls := "heading", "In"),
+          p(cls := "title", in)
+        )
+      ),
+      div(
+        cls := "level-item has-text-centered",
+        div(
+          p(cls := "heading", "Out"),
+          p(cls := "title", out)
+        )
+      )
     )
 
   def buttonComponent(q: Queue[IO, Payload], text: String)(f: MouseEvent => Payload): TypedTag[Button] = {
@@ -95,11 +107,17 @@ package object component {
     div(
       cls := "tile is-ancestor",
       log.map { m =>
-        section(cls := "hero is-light",
-                div(cls := "hero-body",
-                    div(cls := "container",
-                        h1(cls := "title", m.payload.toString()),
-                        h2(cls := "subtitle", m.sender.toString()))))
+        section(
+          cls := "hero is-light",
+          div(
+            cls := "hero-body",
+            div(
+              cls := "container",
+              h1(cls := "title", m.payload.toString()),
+              h2(cls := "subtitle", m.sender.toString())
+            )
+          )
+        )
 
       }
     )
